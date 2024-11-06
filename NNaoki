@@ -10865,7 +10865,7 @@ if World3 then
 	end)
 
 	-- Toggle for Auto Navigate to Tiki Outpost
-	E:Toggle("Auto Navigate to Tiki Outpost (BETA)", _G.AutoTikiOutpost, function(V)
+	E:Toggle("Auto Heart levi navigates to Tiki Outpost [TEST]", _G.AutoTikiOutpost, function(V)
 		_G.AutoTikiOutpost = V
 		StopTween(_G.AutoTikiOutpost)
 	end)
@@ -10914,7 +10914,7 @@ if World3 then
 								-- Calculate direction to Tiki Outpost and set velocity
 								local targetPosition = tikiOutpost.PrimaryPart.Position
 								local direction = (targetPosition - boat.PrimaryPart.Position).unit -- Get direction vector
-								local speed = 100  -- Desired speed
+								local speed = 200  -- Desired speed
 								bodyVelocity.Velocity = direction * speed  -- Apply velocity to move the boat
 
 								-- Make sure the boat is facing in the correct direction
