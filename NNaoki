@@ -184,7 +184,7 @@ function Update:Window(keybind)
 	Page.BackgroundTransparency = 1.10
 	Page.Position = UDim2.new(0.405426834, 0, 0.117000003, 0)
 	Page.Size = UDim2.new(0, 263, 0, 263)
-	Page.Image = "http://www.roblox.com/asset/?id=" .. tostring(118533360898570)
+	Page.Image = "http://www.roblox.com/asset/?id=" .. tostring(118687827090847)
 
 	local MCNR = Instance.new("UICorner")
 	MCNR.Name = "MCNR"
@@ -218,7 +218,7 @@ function Update:Window(keybind)
 	ttittles.Position = UDim2.new(0,30,0.05,0)
 	ttittles.Size = UDim2.new(0, 255, 0.05, 25)
 	ttittles.Font = Enum.Font.SourceSansBold
-	ttittles.Text = "Rum Hub"
+	ttittles.Text = "Naoki Hub                BET!"
 	ttittles.TextSize = 17.000
 	ttittles.TextColor3 = Color3.fromRGB(0, 178, 238)
 	ttittles.TextXAlignment = Enum.TextXAlignment.Left
