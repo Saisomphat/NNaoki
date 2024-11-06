@@ -1,7 +1,7 @@
 local Notification = require(game:GetService("ReplicatedStorage").Notification)
 Notification.new("<Color=Cyan>Welcome to Naoki Hub<Color=/>"):Display()
 wait(0.5)
-Notification.new("<Color=Black>Have funny<Color=/>"):Display()
+Notification.new("<Color=Black>Have fun!<Color=/>"):Display()
 wait(1)
 repeat
 	wait()
@@ -10865,7 +10865,7 @@ if World3 then
 	end)
 
 	-- Toggle for Auto Navigate to Tiki Outpost
-	E:Toggle("Auto Navigate to Tiki Outpost (BETA)", _G.AutoTikiOutpost, function(V)
+	E:Toggle("Auto Navigate to Tiki Outpost (TESTING)", _G.AutoTikiOutpost, function(V)
 		_G.AutoTikiOutpost = V
 		StopTween(_G.AutoTikiOutpost)
 	end)
@@ -10898,13 +10898,15 @@ if World3 then
 							end
 						end
 
-						-- Check if at least 5 players are on the boat
+						-- Allow auto movement even if playersOnBoat >= 0 for testing purposes
 						if playersOnBoat >= 0 then
 							local tikiOutpost = game:GetService("Workspace").Maps:FindFirstChild("Tiki Outpost")
 							if tikiOutpost then
-								-- Set the boat's speed and move it to Tiki Outpost
+								-- Move the boat to the Tiki Outpost
 								boat:SetPrimaryPartCFrame(tikiOutpost.CFrame * CFrame.new(0, 0, 10))
-								boat.VehicleSeat.Throttle = 100  -- Set speed to 100
+								-- Set the boat's speed to 100
+								boat.VehicleSeat.Throttle = 1  -- Make sure the boat starts moving forward
+								boat.VehicleSeat.MaxSpeed = 100 -- Set max speed
 							end
 						end
 					end
@@ -10933,6 +10935,7 @@ if World3 then
 			end
 		end
 	end)
+
 
 
 
