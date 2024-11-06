@@ -1383,7 +1383,7 @@ L2.BorderSizePixel = 0
 L2.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
 L2.Size = UDim2.new(0, 53.5, 0, 53.5)
 L2.BackgroundTransparency = 1.000
-L2.Image = "rbxassetid://84825772206051"
+L2.Image = "rbxassetid://118687827090847"
 L2.Draggable = true
 L2.MouseButton1Click:Connect(function()
 	game.CoreGui:FindFirstChild("Anchor").Enabled = not game.CoreGui:FindFirstChild("Anchor").Enabled
@@ -3638,9 +3638,9 @@ local Mc = A:T("Tab Miscellaneous","rbxassetid://10709782582")
 --------------------------------------------------------------------------------------------------------
 I:Seperator("Join Discord")
 
-I:Label("Everyone Goes Into Socialize")
+I:Label("Just join to acces webhok:D")
 I:Button("Copy Discord Link",function()
-	setclipboard("https://discord.com/invite/hcJ8PHtkfy") 
+	setclipboard("https://https://discord.gg/naokifamily") 
 end)
 
 I:Seperator("Time")
@@ -13291,7 +13291,7 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
 	Title = "Naoki Hub";
 	Text = "Note from Sai your script loading!";
 	Icon = "rbxthumb://type=Asset&id=118687827090847w=150&h=150";
-	Duration = 10
+	Duration = 15
 })
 
 spawn(function()
