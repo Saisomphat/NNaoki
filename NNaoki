@@ -13288,8 +13288,8 @@ end)
 --------------------------------------------------------------------------------------------------------
 local players = game:GetService("Players")
 game:GetService("StarterGui"):SetCore("SendNotification", {
-	Title = "Rum Hub";
-	Text = "Loading Done!";
+	Title = "Naoki Hub";
+	Text = "Note from Sai your script loading!";
 	Icon = "rbxthumb://type=Asset&id=118687827090847w=150&h=150";
 	Duration = 10
 })
