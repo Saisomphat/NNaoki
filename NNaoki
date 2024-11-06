@@ -10865,14 +10865,14 @@ if World3 then
 	end)
 
 	-- Toggle for Auto Navigate to Tiki Outpost
-	E:Toggle("Auto Navigate to Tiki Outpost (TESTING)", _G.AutoTikiOutpost, function(V)
+	E:Toggle("Auto Navigate to Tiki Outpost (BETA)", _G.AutoTikiOutpost, function(V)
 		_G.AutoTikiOutpost = V
 		StopTween(_G.AutoTikiOutpost)
 	end)
 
 	-- Core logic for navigating the boat to Tiki Outpost
 	spawn(function()
-		while wait() do
+		while wait(1) do  -- Adjusted to run every second, not every frame
 			if _G.AutoTikiOutpost then
 				pcall(function()
 					local player = game.Players.LocalPlayer
@@ -10880,15 +10880,15 @@ if World3 then
 					local rootPart = player.Character:WaitForChild("HumanoidRootPart")
 					local boat = game:GetService("Workspace").Boats:FindFirstChild(_G.SelectedBoatLevi)
 
-					-- Only proceed if the player is sitting in the VehicleSeat
+					-- Ensure the player is sitting in the VehicleSeat
 					if boat and humanoid.SeatPart and humanoid.SeatPart:IsA("VehicleSeat") then
-						-- Check if the boat is near the Mansion
+						-- Blacklist Mansion to prevent teleporting there
 						local mansion = game:GetService("Workspace").Maps:FindFirstChild("Mansion")
 						if mansion and (boat.PrimaryPart.Position - mansion.PrimaryPart.Position).Magnitude <= 500 then
 							return -- Skip the logic if the boat is near the Mansion
 						end
 
-						-- If not near Mansion, continue to Tiki Outpost
+						-- Check if players are sitting in the boat
 						local playersOnBoat = 0
 						for _, seat in pairs(boat:GetDescendants()) do
 							if seat:IsA("VehicleSeat") or seat:IsA("Seat") then
@@ -10898,15 +10898,27 @@ if World3 then
 							end
 						end
 
-						-- Allow auto movement even if playersOnBoat >= 0 for testing purposes
+						-- Allow movement even if playersOnBoat >= 0 for testing purposes
 						if playersOnBoat >= 0 then
 							local tikiOutpost = game:GetService("Workspace").Maps:FindFirstChild("Tiki Outpost")
 							if tikiOutpost then
-								-- Move the boat to the Tiki Outpost
-								boat:SetPrimaryPartCFrame(tikiOutpost.CFrame * CFrame.new(0, 0, 10))
-								-- Set the boat's speed to 100
-								boat.VehicleSeat.Throttle = 1  -- Make sure the boat starts moving forward
-								boat.VehicleSeat.MaxSpeed = 100 -- Set max speed
+								-- Apply BodyVelocity for smooth movement
+								local bodyVelocity = boat:FindFirstChild("BodyVelocity")
+								if not bodyVelocity then
+									bodyVelocity = Instance.new("BodyVelocity")
+									bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000) -- High force to overcome inertia
+									bodyVelocity.Velocity = Vector3.new(0, 0, 0) -- Start with no movement
+									bodyVelocity.Parent = boat
+								end
+
+								-- Calculate direction to Tiki Outpost and set velocity
+								local targetPosition = tikiOutpost.PrimaryPart.Position
+								local direction = (targetPosition - boat.PrimaryPart.Position).unit -- Get direction vector
+								local speed = 100  -- Desired speed
+								bodyVelocity.Velocity = direction * speed  -- Apply velocity to move the boat
+
+								-- Make sure the boat is facing in the correct direction
+								boat:SetPrimaryPartCFrame(CFrame.new(boat.PrimaryPart.Position, targetPosition))
 							end
 						end
 					end
@@ -10917,7 +10929,7 @@ if World3 then
 
 	-- Collision handling for the boat
 	spawn(function()
-		while wait() do
+		while wait(1) do  -- Adjusted to run every second
 			if _G.AutoTikiOutpost then
 				pcall(function()
 					for _, boat in pairs(game:GetService("Workspace").Boats:GetChildren()) do
@@ -10935,6 +10947,7 @@ if World3 then
 			end
 		end
 	end)
+
 
 
 
