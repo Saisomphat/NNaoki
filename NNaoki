@@ -1,7 +1,7 @@
 local Notification = require(game:GetService("ReplicatedStorage").Notification)
-Notification.new("<Color=Cyan>Welcome to Rum Hub<Color=/>"):Display()
+Notification.new("<Color=Cyan>Welcome to Naoki Hub<Color=/>"):Display()
 wait(0.5)
-Notification.new("<Color=Yellow>Everyone Goes to Discord to Communicate<Color=/>"):Display()
+Notification.new("<Color=Yellow>Have fun!<Color=/>"):Display()
 wait(1)
 repeat
 	wait()
@@ -13290,7 +13290,7 @@ local players = game:GetService("Players")
 game:GetService("StarterGui"):SetCore("SendNotification", {
 	Title = "Rum Hub";
 	Text = "Loading Done!";
-	Icon = "rbxthumb://type=Asset&id=84825772206051&w=150&h=150";
+	Icon = "rbxthumb://type=Asset&id=118687827090847w=150&h=150";
 	Duration = 10
 })
 
