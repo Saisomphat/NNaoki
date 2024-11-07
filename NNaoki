@@ -12558,6 +12558,8 @@ if World3 then
 		"Castle on the Sea",
 		"Floating Turtle",
 		"Beautiful Pirate"
+		"Great Tree"
+		"Tiki Outpost"
 	},function(V)
 		_G.SelectFast = V
 	end)
