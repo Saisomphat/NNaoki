@@ -10864,17 +10864,26 @@ if World3 then
 		end
 	end)
 
-	E:Toggle("Bring heart to tiki",_G.TikiOutpost,function(V)
+	E:Toggle("Bring heart to tiki [TEST]", _G.TikiOutpost, function(V)
 		_G.TikiOutpost = V
 		StopTween(_G.TikiOutpost)
 	end)
+
+	-- Assuming the boat is a model in the workspace
+	local boat = game.Workspace:FindFirstChild("Boat")  -- Replace "Boat" with the actual name of your boat model
 
 	spawn(function()
 		while wait() do
 			if _G.TikiOutpost then
 				pcall(function()
-					if game.Workspace._WorldOrigin.Locations:FindFirstChild('Tiki Outpost') then
-						topos(workspace._WorldOrigin.Locations:FindFirstChild("Tiki Outpost").CFrame*CFrame.new(0,250,0))
+					if game.Workspace._WorldOrigin.Locations:FindFirstChild("Tiki Outpost") then
+						local tikiPosition = game.Workspace._WorldOrigin.Locations:FindFirstChild("Tiki Outpost").CFrame * CFrame.new(0, 250, 0)
+						-- Move the heart (or object) to follow the boat
+						local heart = game.Workspace:FindFirstChild("Heart")  -- Replace "Heart" with the name of the object
+						if heart and boat then
+							-- Update the position of the heart based on the boat's position
+							heart.CFrame = boat.CFrame * CFrame.new(0, 0, 5)  -- Adjust offset (5) as needed to position the heart correctly
+						end
 					end
 				end)
 			end
