@@ -7616,8 +7616,8 @@ if World2 then
 		end)
 	end)
 
-	M:Toggle("Auto Cyborg", _G.Farm, function(V)
-		_G.Level = V
+	M:Toggle("Auto Cyborg [BETA]", _G.Farm, function(V)
+		_G.Farm = V
 		StopTween(_G.Farm)
 
 		local Notification = require(game:GetService("ReplicatedStorage").Notification)
@@ -7631,6 +7631,17 @@ if World2 then
 			return false
 		end
 
+		local function collectChests()
+			for _, chest in ipairs(game.Workspace.Chests:GetChildren()) do
+				if _G.Farm then
+					topos(chest.CFrame)
+					wait(0.5)
+				else
+					break
+				end
+			end
+		end
+
 		repeat
 			wait()
 
@@ -7640,9 +7651,11 @@ if World2 then
 				break
 			end
 
+			collectChests()
 
 		until not _G.Farm
 	end)
+
 
 
 	M:Seperator("Rengoku")
