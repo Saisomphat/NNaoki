@@ -8339,7 +8339,7 @@ if World3 then
 
 	M:Seperator("Soul Guitar")
 
-	M:Toggle("Auto Soul Guitar ( Test )",_G.Guitar,function(V)
+	M:Toggle("Auto Soul Guitar [BETA]",_G.Guitar,function(V)
 		_G.Guitar = V    
 		StopTween(_G.Guitar)
 	end)
@@ -8525,7 +8525,7 @@ if World3 then
 
 	M:Seperator("Dual Curse Katana")
 
-	M:Toggle("Auto Dual Curse Katana ( Test )",_G.Cdk,function(V)
+	M:Toggle("Auto Dual Curse Katana [BETA]",_G.Cdk,function(V)
 		_G.CDK = V
 		StopTween(_G.CDK)
 	end)
@@ -10869,11 +10869,11 @@ if World3 then
 	local VirtualInputManager = game:GetService("VirtualInputManager")
 
 	-- Toggle for bringing boat to Tiki Outpost
-	E:Toggle("Bring boat to tiki", _G.TikiOutpost, function(V)
+	E:Toggle("Auto Heart levi navigates to Tiki Outpost [BETA]", _G.TikiOutpost, function(V)
 		_G.TikiOutpost = V
 		StopTween(_G.TikiOutpost)
 
-		-- If "Auto Heart levi navigates to Tiki Outpost [BETA]" is enabled, also enable auto-press "W" and increase boat speed
+		-- If "Bring boat to tiki" is enabled, also enable auto-press "W" and increase boat speed
 		if V then
 			_G.r71PressW = true  -- Enable auto-press W
 			_G.IncreaseBoatSpeed = true  -- Increase boat speed
