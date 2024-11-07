@@ -10847,7 +10847,7 @@ if World3 then
 		end
 	end)
 
-	E:Toggle("Tween Frozen Dimension [TEST]",_G.FrozenDimension,function(V)
+	E:Toggle("Tween Frozen Dimension",_G.FrozenDimension,function(V)
 		_G.FrozenDimension = V
 		StopTween(_G.FrozenDimension)
 	end)
@@ -10873,7 +10873,7 @@ if World3 then
 		_G.TikiOutpost = V
 		StopTween(_G.TikiOutpost)
 
-		-- If "Bring boat to tiki" is enabled, also enable auto-press "W" and increase boat speed
+		-- If "Auto Heart levi navigates to Tiki Outpost [BETA]" is enabled, also enable auto-press "W" and increase boat speed
 		if V then
 			_G.r71PressW = true  -- Enable auto-press W
 			_G.IncreaseBoatSpeed = true  -- Increase boat speed
