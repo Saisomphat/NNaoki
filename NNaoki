@@ -10865,10 +10865,22 @@ if World3 then
 	end)
 
 	local TweenService = game:GetService("TweenService")
+	local RunService = game:GetService("RunService")
+	local VirtualInputManager = game:GetService("VirtualInputManager")
 
+	-- Toggle for bringing boat to Tiki Outpost
 	E:Toggle("Bring boat to tiki", _G.TikiOutpost, function(V)
 		_G.TikiOutpost = V
 		StopTween(_G.TikiOutpost)
+
+		-- If "Bring boat to tiki" is enabled, also enable auto-press "W" and increase boat speed
+		if V then
+			_G.r71PressW = true  -- Enable auto-press W
+			_G.IncreaseBoatSpeed = true  -- Increase boat speed
+		else
+			_G.r71PressW = false  -- Disable auto-press W
+			_G.IncreaseBoatSpeed = false  -- Reset boat speed to default
+		end
 	end)
 
 	-- Assuming the boat is a model in the workspace
@@ -10901,6 +10913,45 @@ if World3 then
 		return stopBoat
 	end
 
+	-- Auto press W while sitting
+	spawn(function()
+		while wait() do
+			pcall(function()
+				if _G.r71PressW then
+					if game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Sit == true then
+						-- Simulate pressing "W"
+						VirtualInputManager:SendKeyEvent(true, "W", false, game)
+					end
+				end
+			end)
+		end
+	end)
+
+	-- Adjust the boat speed based on the IncreaseBoatSpeed toggle
+	spawn(function()
+		while wait() do 
+			pcall(function()
+				local vehicleSeats = {}
+				for i, v in pairs(game.Workspace.Boats:GetDescendants()) do
+					if v:IsA("VehicleSeat") then
+						table.insert(vehicleSeats, v)
+					end
+				end
+				-- Check if the IncreaseBoatSpeed toggle is active
+				if _G.IncreaseBoatSpeed then
+					for _, v in pairs(vehicleSeats) do
+						v.MaxSpeed = 350  -- Increase speed
+					end
+				else
+					for _, v in pairs(vehicleSeats) do
+						v.MaxSpeed = 150  -- Default speed
+					end
+				end
+			end)
+		end
+	end)
+
+	-- Move the boat based on Tiki Outpost toggle
 	RunService.Heartbeat:Connect(function()
 		if _G.TikiOutpost then
 			pcall(function()
@@ -10912,6 +10963,7 @@ if World3 then
 			end)
 		end
 	end)
+
 
 
 
