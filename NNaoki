@@ -7616,6 +7616,35 @@ if World2 then
 		end)
 	end)
 
+	M:Toggle("Auto Cyborg", _G.Farm, function(V)
+		_G.Level = V
+		StopTween(_G.Farm)
+
+		local Notification = require(game:GetService("ReplicatedStorage").Notification)
+
+		local function hasFistOfDarkness()
+			for _, tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+				if tool.Name == "Fist of Darkness" then
+					return true
+				end
+			end
+			return false
+		end
+
+		repeat
+			wait()
+
+			if hasFistOfDarkness() then
+				StopTween(_G.Farm)
+				Notification.new("<Color=Red>Stopping farm: Fist of Darkness found<Color=/>"):Display()
+				break
+			end
+
+
+		until not _G.Farm
+	end)
+
+
 	M:Seperator("Rengoku")
 
 	M:Toggle("Auto Rengoku",_G.Rengoku,function(V)
