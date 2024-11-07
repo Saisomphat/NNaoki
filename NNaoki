@@ -13221,6 +13221,26 @@ spawn(function()
 		end
 	end
 end)
+
+D:Toggle("Bring All Fruit 75% Kick System",_G.BringFruitBF,function(V)
+	_G.BringFruitBF = V
+end)
+
+spawn(function()
+	while wait() do
+		if _G.BringFruitBF then
+			pcall(function()
+				for i,v in pairs(game.Workspace:GetChildren()) do
+					if v:IsA("Tool") then
+						v.Handle.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+					end
+				end	
+			end)
+		end
+	end
+end)
+
+
 --------------------------------------------------------------------------------------------------------
 Mc:Seperator("Server")
 
