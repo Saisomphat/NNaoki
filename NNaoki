@@ -11231,13 +11231,6 @@ V:Toggle("Esp Mystic Island", false, function(V)
 	end
 end)
 
-V:Toggle("ESP Legendary Sword Dealer", false, function(V)
-	Legendary Sword Dealer = V
-	while Legendary Sword Dealer do wait()
-		UpdateLegendarySwordDealer()
-	end
-end)
-
 V:Seperator("Troll")
 V:Button('Rain Fruit', function()
 	for i, v in pairs(game:GetObjects("rbxassetid://14759368201")[1]:GetChildren()) do
