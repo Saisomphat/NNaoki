@@ -1383,7 +1383,7 @@ L2.BorderSizePixel = 0
 L2.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
 L2.Size = UDim2.new(0, 53.5, 0, 53.5)
 L2.BackgroundTransparency = 1.000
-L2.Image = "rbxassetid://118687827090847"
+L2.Image = "rbxassetid://
 L2.Draggable = true
 L2.MouseButton1Click:Connect(function()
 	game.CoreGui:FindFirstChild("Anchor").Enabled = not game.CoreGui:FindFirstChild("Anchor").Enabled
@@ -3692,6 +3692,7 @@ spawn(function()
 end)
 
 I:Seperator("Status Player")
+I:Seperator("Credit by Naoki sai & Owner of the Naoki")
 
 local localrace = I:Label("Race")
 
