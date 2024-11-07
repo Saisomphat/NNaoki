@@ -10847,7 +10847,7 @@ if World3 then
 		end
 	end)
 
-	E:Toggle("Tween Frozen Dimension",_G.FrozenDimension,function(V)
+	E:Toggle("Tween Frozen Dimension [TEST]",_G.FrozenDimension,function(V)
 		_G.FrozenDimension = V
 		StopTween(_G.FrozenDimension)
 	end)
@@ -10864,14 +10864,14 @@ if World3 then
 		end
 	end)
 
-	E:Toggle("Bring heart to tiki",_G.FrozenDimension,function(V)
-		_G.FrozenDimension = V
-		StopTween(_G.FrozenDimension)
+	E:Toggle("Bring heart to tiki",_G.TikiOutpost,function(V)
+		_G.TikiOutpost = V
+		StopTween(_G.TikiOutpost)
 	end)
 
 	spawn(function()
 		while wait() do
-			if _G.FrozenDimension then
+			if _G.TikiOutpost then
 				pcall(function()
 					if game.Workspace._WorldOrigin.Locations:FindFirstChild('Tiki Outpost') then
 						topos(workspace._WorldOrigin.Locations:FindFirstChild("Tiki Outpost").CFrame*CFrame.new(0,250,0))
