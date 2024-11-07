@@ -10951,7 +10951,7 @@ if World3 then
 		end
 	end)
 
-	-- Move the boat based on Tiki Outpost toggle
+	-- Move the boat towards Tiki Outpost location
 	RunService.Heartbeat:Connect(function()
 		if _G.TikiOutpost then
 			pcall(function()
@@ -10963,6 +10963,7 @@ if World3 then
 			end)
 		end
 	end)
+
 
 
 
