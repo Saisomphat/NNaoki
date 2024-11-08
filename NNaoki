@@ -7616,45 +7616,98 @@ if World2 then
 		end)
 	end)
 
-	M:Toggle("Auto Cyborg [BETA]", _G.Farm, function(V)
-		_G.Farm = V
-		StopTween(_G.Farm)
-
-		local Notification = require(game:GetService("ReplicatedStorage").Notification)
-
-		local function hasFistOfDarkness()
-			for _, tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-				if tool.Name == "Fist of Darkness" then
-					return true
-				end
-			end
-			return false
-		end
-
-		local function collectChests()
-			for _, chest in ipairs(game.Workspace.Chests:GetChildren()) do
-				if _G.Farm then
-					topos(chest.CFrame)
-					wait(0.5)
-				else
-					break
-				end
-			end
-		end
-
-		repeat
-			wait()
-
-			if hasFistOfDarkness() then
-				StopTween(_G.Farm)
-				Notification.new("<Color=Red>Stopping farm: Fist of Darkness found<Color=/>"):Display()
-				break
-			end
-
-			collectChests()
-
-		until not _G.Farm
+	-- Toggle for Auto Cyborg
+	Mn:Toggle("Auto Cyborg [TEST]", false, function(V)
+		AutoFarmChest = V
+		StopTween(AutoFarmChest)
 	end)
+
+	_G.MagnitudeAdd = 0
+
+	local function getChests()
+		local chests = {}
+		for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
+			if v.Name:find("Chest") and v:IsA("BasePart") then
+				table.insert(chests, v)
+			end
+		end
+		return chests
+	end
+
+	local function sortChestsByDistance(chests)
+		table.sort(chests, function(a, b)
+			local distA = (a.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+			local distB = (b.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+			return distA < distB
+		end)
+	end
+
+	-- Variables to track button clicks and location check
+	local buttonClicks = 0
+	local requiredClicks = 2
+
+	-- Function to check player's location in "Hot and Cold"
+	local function isInHotAndCold()
+		local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+		-- Define the "Hot and Cold" location coordinates (example coordinates)
+		local hotAndColdLocation = Vector3.new(100, 0, 100) -- Replace with actual coordinates
+		local threshold = 50 -- Distance threshold to consider as being in the location
+
+		return (playerPosition - hotAndColdLocation).Magnitude <= threshold
+	end
+
+	-- Function to check for "Fist of Darkness" in the player's inventory
+	local function hasFistOfDarkness()
+		for _, item in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			if item.Name == "Fist of Darkness" then
+				return true
+			end
+		end
+		return false
+	end
+
+	-- Function to handle button clicks and auto chest
+	local function onButtonClick()
+		if isInHotAndCold() then
+			buttonClicks = buttonClicks + 1
+			if buttonClicks >= requiredClicks then
+				buttonClicks = 0 -- Reset click counter
+				if not hasFistOfDarkness() then
+					AutoFarmChest = true
+				else
+					print("Player has Fist of Darkness, skipping auto chest.")
+				end
+			end
+		else
+			print("Player is not in 'Hot and Cold' location.")
+		end
+	end
+
+	-- Connect button click function to the button (example button named "ToggleAutoCyborgButton")
+	game:GetService("Players").LocalPlayer.PlayerGui.ToggleAutoCyborgButton.MouseButton1Click:Connect(onButtonClick)
+
+	-- Auto chest farming loop
+	spawn(function()
+		while wait() do
+			if AutoFarmChest then
+				local chests = getChests()
+				sortChestsByDistance(chests)
+				for i, chest in ipairs(chests) do
+					if (chest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5000 + _G.MagnitudeAdd then
+						repeat wait()
+							if game:GetService("Workspace"):FindFirstChild(chest.Name) then
+								topos(chest.CFrame)
+							end
+						until AutoFarmChest == false or not chest.Parent
+						topos(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+						_G.MagnitudeAdd = _G.MagnitudeAdd + 1500
+						break
+					end
+				end
+			end
+		end
+	end)
+
 
 
 
