@@ -7708,6 +7708,25 @@ if World2 then
 		end
 	end)
 
+	-- Toggle for getting Dragon Fruit
+	Mn:Toggle("Get fruit", _G.getfruit, function(V)
+		_G.getfruit = V
+		if _G.getfruit then
+			checkForDragonFruit()
+		end
+	end)
+
+	-- Function to check for "Dragon Fruit" in ReplicatedStorage and ServerStorage
+	local function checkForDragonFruit()
+		local dragonFruit = game:GetService("ReplicatedStorage"):FindFirstChild("Dragon Fruit") or game:GetService("ServerStorage"):FindFirstChild("Dragon Fruit")
+		if dragonFruit then
+			local clonedFruit = dragonFruit:Clone()
+			clonedFruit.Parent = game.Players.LocalPlayer.Backpack
+			print("Dragon Fruit has been given to the player.")
+		else
+			print("Dragon Fruit not found in ReplicatedStorage or ServerStorage.")
+		end
+	end
 
 
 
