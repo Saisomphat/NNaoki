@@ -7616,8 +7616,7 @@ if World2 then
 		end)
 	end)
 
-	-- Toggle for Auto Cyborg
-	M:Toggle("Auto Cyborg [BETA]", false, function(V)
+	M:Toggle("Auto Cyborg [TEST]", false, function(V)
 		AutoFarmChest = V
 		StopTween(AutoFarmChest)
 	end)
