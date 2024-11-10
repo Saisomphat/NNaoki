@@ -184,7 +184,7 @@ function Update:Window(keybind)
 	Page.BackgroundTransparency = 1.10
 	Page.Position = UDim2.new(0.405426834, 0, 0.117000003, 0)
 	Page.Size = UDim2.new(0, 263, 0, 263)
-	Page.Image = "http://www.roblox.com/asset/?id=" .. tostring(118687827090847)
+	Page.Image = "http://www.roblox.com/asset/?id=" .. tostring(112257789445655)
 
 	local MCNR = Instance.new("UICorner")
 	MCNR.Name = "MCNR"
@@ -218,7 +218,7 @@ function Update:Window(keybind)
 	ttittles.Position = UDim2.new(0,30,0.05,0)
 	ttittles.Size = UDim2.new(0, 255, 0.05, 25)
 	ttittles.Font = Enum.Font.SourceSansBold
-	ttittles.Text = "Naoki Hub                BET!"
+	ttittles.Text = "Naoki Hub (REAL)"
 	ttittles.TextSize = 17.000
 	ttittles.TextColor3 = Color3.fromRGB(0, 178, 238)
 	ttittles.TextXAlignment = Enum.TextXAlignment.Left
@@ -3692,6 +3692,7 @@ spawn(function()
 end)
 
 I:Seperator("Status Player")
+I:Seperator("Credit by Naoki sai & Owner of the Naoki")
 
 local localrace = I:Label("Race")
 
@@ -7615,6 +7616,48 @@ if World2 then
 		end)
 	end)
 
+	M:Toggle("Auto Cyborg [BETA]", _G.Farm, function(V)
+		_G.Farm = V
+		StopTween(_G.Farm)
+
+		local Notification = require(game:GetService("ReplicatedStorage").Notification)
+
+		local function hasFistOfDarkness()
+			for _, tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+				if tool.Name == "Fist of Darkness" then
+					return true
+				end
+			end
+			return false
+		end
+
+		local function collectChests()
+			for _, chest in ipairs(game.Workspace.Chests:GetChildren()) do
+				if _G.Farm then
+					topos(chest.CFrame)
+					wait(0.5)
+				else
+					break
+				end
+			end
+		end
+
+		repeat
+			wait()
+
+			if hasFistOfDarkness() then
+				StopTween(_G.Farm)
+				Notification.new("<Color=Red>Stopping farm: Fist of Darkness found<Color=/>"):Display()
+				break
+			end
+
+			collectChests()
+
+		until not _G.Farm
+	end)
+
+
+
 	M:Seperator("Rengoku")
 
 	M:Toggle("Auto Rengoku",_G.Rengoku,function(V)
@@ -8339,7 +8382,7 @@ if World3 then
 
 	M:Seperator("Soul Guitar")
 
-	M:Toggle("Auto Soul Guitar ( Test )",_G.Guitar,function(V)
+	M:Toggle("Auto Soul Guitar [BETA]",_G.Guitar,function(V)
 		_G.Guitar = V    
 		StopTween(_G.Guitar)
 	end)
@@ -8525,7 +8568,7 @@ if World3 then
 
 	M:Seperator("Dual Curse Katana")
 
-	M:Toggle("Auto Dual Curse Katana ( Test )",_G.Cdk,function(V)
+	M:Toggle("Auto Dual Curse Katana [BETA]",_G.Cdk,function(V)
 		_G.CDK = V
 		StopTween(_G.CDK)
 	end)
@@ -10765,7 +10808,7 @@ if World3 then
 									end
 								end
 							end
-							if playersonBoat >= 1 then
+							if playersonBoat >= 4 then
 								if not humanoid.Sit then
 									rootPart.CFrame = boat.VehicleSeat.CFrame
 									wait(1)
@@ -10778,7 +10821,7 @@ if World3 then
 										boat.VehicleSeat.BodyPosition.D = 5000
 										boat.VehicleSeat.BodyPosition.Position = Vector3.new(0, 200, 0)
 										TPB(boat.VehicleSeat.CFrame * CFrame.new(-30, 0, -30))
-										if game:GetService("Workspace").Maps:FindFirstChild("Frozen Dimension") then
+										if game:GetService("Workspace").Maps:FindFirstChild("Frozen Island") then
 											_G.AutoLeviathan = false
 											break
 										end
@@ -10863,6 +10906,110 @@ if World3 then
 			end
 		end
 	end)
+
+	local TweenService = game:GetService("TweenService")
+	local RunService = game:GetService("RunService")
+	local VirtualInputManager = game:GetService("VirtualInputManager")
+
+	-- Toggle for bringing boat to Tiki Outpost
+	E:Toggle("Auto Heart levi navigates to Tiki Outpost [BETA]", _G.TikiOutpost, function(V)
+		_G.TikiOutpost = V
+		StopTween(_G.TikiOutpost)
+
+		-- If "Bring boat to tiki" is enabled, also enable auto-press "W" and increase boat speed
+		if V then
+			_G.r71PressW = true  -- Enable auto-press W
+			_G.IncreaseBoatSpeed = true  -- Increase boat speed
+		else
+			_G.r71PressW = false  -- Disable auto-press W
+			_G.IncreaseBoatSpeed = false  -- Reset boat speed to default
+		end
+	end)
+
+	-- Assuming the boat is a model in the workspace
+	local boat = game.Workspace:FindFirstChild("Boat")  -- Replace "Boat" with the actual name of your boat model
+
+	-- Function to move the boat to the target position using TweenService
+	function TPB(pos, boat)
+		local tween_s = game:GetService("TweenService")
+
+		-- Calculate the time it will take to reach the target position based on the boat's speed
+		local info = TweenInfo.new((boat.CFrame.Position - pos.Position).Magnitude / getgenv().SpeedBoat, Enum.EasingStyle.Linear)
+
+		-- Create a tween for the boat to move towards the target position
+		local tween = tween_s:Create(boat, info, {CFrame = pos})
+
+		local stopBoat = {}
+
+		-- Stop function to cancel the tween
+		function stopBoat:Stop()
+			tween:Cancel()
+		end
+
+		-- If the boat is within a certain range, stop the tween
+		if (boat.CFrame.Position - pos.Position).Magnitude <= 25 then
+			stopBoat:Stop()
+		else
+			tween:Play()
+		end
+
+		return stopBoat
+	end
+
+	-- Auto press W while sitting
+	spawn(function()
+		while wait() do
+			pcall(function()
+				if _G.r71PressW then
+					if game.Players.LocalPlayer.Character:WaitForChild("Humanoid").Sit == true then
+						-- Simulate pressing "W"
+						VirtualInputManager:SendKeyEvent(true, "W", false, game)
+					end
+				end
+			end)
+		end
+	end)
+
+	-- Adjust the boat speed based on the IncreaseBoatSpeed toggle
+	spawn(function()
+		while wait() do 
+			pcall(function()
+				local vehicleSeats = {}
+				for i, v in pairs(game.Workspace.Boats:GetDescendants()) do
+					if v:IsA("VehicleSeat") then
+						table.insert(vehicleSeats, v)
+					end
+				end
+				-- Check if the IncreaseBoatSpeed toggle is active
+				if _G.IncreaseBoatSpeed then
+					for _, v in pairs(vehicleSeats) do
+						v.MaxSpeed = 350  -- Increase speed
+					end
+				else
+					for _, v in pairs(vehicleSeats) do
+						v.MaxSpeed = 150  -- Default speed
+					end
+				end
+			end)
+		end
+	end)
+
+	-- Move the boat towards Tiki Outpost location
+	RunService.Heartbeat:Connect(function()
+		if _G.TikiOutpost then
+			pcall(function()
+				if game.Workspace._WorldOrigin.Locations:FindFirstChild("Tiki Outpost") then
+					local tikiPosition = game.Workspace._WorldOrigin.Locations:FindFirstChild("Tiki Outpost").CFrame * CFrame.new(0, 250, 0)
+					-- Use the TPB function to move the boat
+					TPB(tikiPosition, boat)
+				end
+			end)
+		end
+	end)
+
+
+
+
 
 	E:Seperator("Settings Skills Only Sea Event")
 
@@ -13117,6 +13264,26 @@ spawn(function()
 		end
 	end
 end)
+
+D:Toggle("Bring All Fruit 75% Kick System",_G.BringFruitBF,function(V)
+	_G.BringFruitBF = V
+end)
+
+spawn(function()
+	while wait() do
+		if _G.BringFruitBF then
+			pcall(function()
+				for i,v in pairs(game.Workspace:GetChildren()) do
+					if v:IsA("Tool") then
+						v.Handle.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+					end
+				end	
+			end)
+		end
+	end
+end)
+
+
 --------------------------------------------------------------------------------------------------------
 Mc:Seperator("Server")
 
