@@ -7756,66 +7756,66 @@ end
 
 	M:Seperator("SPECIAL RACE")
 	
-M:Toggle("Auto Cyborg (TEST)", _G.Farm, function(V)
-	local function hasFistOfDarkness(player)
-		return player.Backpack:FindFirstChild("FistOfDarkness") ~= nil
+M:Toggle("Auto Cyborg (TEST)", false, function(V)
+	AutoFarmChest = V
+	-- StopTween(AutoFarmChest) -- Uncomment this if you have a valid StopTween function
+	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+end)
+
+_G.MagnitudeAdd = 0
+
+local function getChests()
+	local chests = {}
+	for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+		if v.Name:find("Chest") and v:IsA("BasePart") then
+			table.insert(chests, v)
+		end
 	end
+	return chests
+end
 
-	local function startFarming()
-		local player = game.Players.LocalPlayer
-		local clickDetector = game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector
+local function sortChestsByDistance(chests)
+	table.sort(chests, function(a, b)
+		local distA = (a.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+		local distB = (b.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+		return distA < distB
+	end)
+end
 
-		fireclickdetector(clickDetector)
-		wait(0.1)
-		fireclickdetector(clickDetector)
+local function topos(targetCFrame)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetCFrame
+end
 
-		local _G = _G or {}
-		_G.MagnitudeAdd = 0
-
-		local function getChests()
-			local chests = {}
-			for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
-				if v.Name:find("Chest") and v:IsA("BasePart") then
-					table.insert(chests, v)
-				end
+spawn(function()
+	while wait() do
+		if _G.StopItemsChest then
+			if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("God's Chalice") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Fist of Darkness") then
+				_G.ChestBypass = false
+				topos(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
 			end
-			return chests
 		end
+	end
+end)
 
-		local function sortChestsByDistance(chests)
-			table.sort(chests, function(a, b)
-				local distA = (a.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-				local distB = (b.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-				return distA < distB
-			end)
-		end
-
-		spawn(function()
-			while wait() do
-				if _G.Farm then
-					local chests = getChests()
-					sortChestsByDistance(chests)
-					for i, chest in ipairs(chests) do
-						if (chest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5000 + _G.MagnitudeAdd then
-							repeat wait()
-								if game:GetService("Workspace"):FindFirstChild(chest.Name) then
-									topos(chest.CFrame)
-								end
-							until _G.Farm == false or not chest.Parent
-							topos(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-							_G.MagnitudeAdd = _G.MagnitudeAdd + 1500
-							break
+spawn(function()
+	while wait() do
+		if AutoFarmChest then
+			local chests = getChests()
+			sortChestsByDistance(chests)
+			for i, chest in ipairs(chests) do
+				if (chest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5000 + _G.MagnitudeAdd then
+					repeat wait()
+						if game:GetService("Workspace"):FindFirstChild(chest.Name) then
+							topos(chest.CFrame)
 						end
-					end
+					until not AutoFarmChest or not chest.Parent
+					topos(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+					_G.MagnitudeAdd = _G.MagnitudeAdd + 1500
+					break
 				end
 			end
-		end)
-	end
-
-	if V then
-		startFarming()
-	else
-		_G.Farm = false
+		end
 	end
 end)
 
