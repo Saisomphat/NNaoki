@@ -7756,7 +7756,7 @@ end
 
 	M:Seperator("SPECIAL RACE")
 	
-M:Toggle("Auto Cyborg (TEST)", false, function(V)
+M:Toggle("Auto Cyborg (BETA)", false, function(V)
 	AutoFarmChest = V
 	-- Fire the ClickDetector twice
 	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
