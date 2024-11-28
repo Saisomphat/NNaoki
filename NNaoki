@@ -7754,6 +7754,84 @@ if World2 then
 	end)
 end
 
+	M:Seperator("SPECIAL RACE")
+	
+M:Toggle("Auto Cyborg", _G.Farm, function(V)
+	local function hasFistOfDarkness(player)
+		return player.Backpack:FindFirstChild("FistOfDarkness") ~= nil
+	end
+
+	local function fireClickDetector(clickDetector)
+		clickDetector.MouseClick:Fire()
+		wait(0.1)
+		clickDetector.MouseClick:Fire()
+	end
+
+	local function autoFarmChests()
+		local _G = _G or {}
+		_G.MagnitudeAdd = 0
+
+		local function getChests()
+			local chests = {}
+			for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
+				if v.Name:find("Chest") and v:IsA("BasePart") then
+					table.insert(chests, v)
+				end
+			end
+			return chests
+		end
+
+		local function sortChestsByDistance(chests)
+			table.sort(chests, function(a, b)
+				local distA = (a.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+				local distB = (b.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+				return distA < distB
+			end)
+		end
+
+		spawn(function()
+			while wait() do
+				if _G.Farm then
+					local chests = getChests()
+					sortChestsByDistance(chests)
+					for i, chest in ipairs(chests) do
+						if (chest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5000 + _G.MagnitudeAdd then
+							repeat wait()
+								if game:GetService("Workspace"):FindFirstChild(chest.Name) then
+									topos(chest.CFrame)
+								end
+							until _G.Farm == false or not chest.Parent
+							topos(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+							_G.MagnitudeAdd = _G.MagnitudeAdd + 1500
+							break
+						end
+					end
+				end
+			end
+		end)
+	end
+
+	local function startFarming()
+		local player = game.Players.LocalPlayer
+		local clickDetector = game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector
+
+		if hasFistOfDarkness(player) then
+			fireClickDetector(clickDetector)
+		else
+			fireClickDetector(clickDetector)
+		end
+
+		autoFarmChests()
+	end
+
+	if V then
+		startFarming()
+	else
+		_G.Farm = false
+	end
+end)
+
+
 if World3 then
 	M:Label("Sea 3")
 
