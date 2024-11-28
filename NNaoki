@@ -7756,18 +7756,19 @@ end
 
 	M:Seperator("SPECIAL RACE")
 	
-M:Toggle("Auto Cyborg", _G.Farm, function(V)
+M:Toggle("Auto Cyborg (TEST)", _G.Farm, function(V)
 	local function hasFistOfDarkness(player)
 		return player.Backpack:FindFirstChild("FistOfDarkness") ~= nil
 	end
 
-	local function fireClickDetector(clickDetector)
-		clickDetector.MouseClick:Fire()
-		wait(0.1)
-		clickDetector.MouseClick:Fire()
-	end
+	local function startFarming()
+		local player = game.Players.LocalPlayer
+		local clickDetector = game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector
 
-	local function autoFarmChests()
+		fireclickdetector(clickDetector)
+		wait(0.1)
+		fireclickdetector(clickDetector)
+
 		local _G = _G or {}
 		_G.MagnitudeAdd = 0
 
@@ -7811,25 +7812,13 @@ M:Toggle("Auto Cyborg", _G.Farm, function(V)
 		end)
 	end
 
-	local function startFarming()
-		local player = game.Players.LocalPlayer
-		local clickDetector = game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector
-
-		if hasFistOfDarkness(player) then
-			fireClickDetector(clickDetector)
-		else
-			fireClickDetector(clickDetector)
-		end
-
-		autoFarmChests()
-	end
-
 	if V then
 		startFarming()
 	else
 		_G.Farm = false
 	end
 end)
+
 
 
 if World3 then
