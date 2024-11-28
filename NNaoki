@@ -7758,9 +7758,35 @@ end
 	
 M:Toggle("Auto Cyborg (TEST)", false, function(V)
 	AutoFarmChest = V
-	-- StopTween(AutoFarmChest) -- Uncomment this if you have a valid StopTween function
+	-- Fire the ClickDetector twice
 	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
 	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+
+	-- Check if the player has "Fist of Darkness" or "God's Chalice"
+	if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Fist of Darkness") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("God's Chalice") then
+		-- Fire the ClickDetector once
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+
+		-- Invoke the server with the specified arguments
+		local args = {
+			[1] = "BlackbeardReward",
+			[2] = "Microchip",
+			[3] = "2"
+		}
+		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+		-- Fire the ClickDetector again
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+
+		-- Repeat the ClickDetector firing until the player gets "Brain Cornin"
+		repeat
+			fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+			wait(1)  -- Adjust the wait time if necessary
+		until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Core Brain")
+
+		-- Fire the ClickDetector one more time after getting "Brain Cornin"
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	end
 end)
 
 _G.MagnitudeAdd = 0
@@ -7818,6 +7844,7 @@ spawn(function()
 		end
 	end
 end)
+
 
 
 
