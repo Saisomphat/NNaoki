@@ -7616,47 +7616,6 @@ if World2 then
 		end)
 	end)
 
-	M:Toggle("Auto Cyborg [BETA]", _G.Farm, function(V)
-		_G.Farm = V
-		StopTween(_G.Farm)
-
-		local Notification = require(game:GetService("ReplicatedStorage").Notification)
-
-		local function hasFistOfDarkness()
-			for _, tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-				if tool.Name == "Fist of Darkness" then
-					return true
-				end
-			end
-			return false
-		end
-
-		local function collectChests()
-			for _, chest in ipairs(game.Workspace.Chests:GetChildren()) do
-				if _G.Farm then
-					topos(chest.CFrame)
-					wait(0.5)
-				else
-					break
-				end
-			end
-		end
-
-		repeat
-			wait()
-
-			if hasFistOfDarkness() then
-				StopTween(_G.Farm)
-				Notification.new("<Color=Red>Stopping farm: Fist of Darkness found<Color=/>"):Display()
-				break
-			end
-
-			collectChests()
-
-		until not _G.Farm
-	end)
-
-
 
 	M:Seperator("Rengoku")
 
@@ -7845,7 +7804,45 @@ spawn(function()
 	end
 end)
 
+M:Toggle("Auto Ghoul (Not working TEST)", _G.Farm, function(V)
+	_G.Farm = V
+	StopTween(_G.Farm)
 
+	local Notification = require(game:GetService("ReplicatedStorage").Notification)
+
+	local function hasFistOfDarkness()
+		for _, tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			if tool.Name == "Fist of Darkness" then
+				return true
+			end
+		end
+		return false
+	end
+
+	local function collectChests()
+		for _, chest in ipairs(game.Workspace.Chests:GetChildren()) do
+			if _G.Farm then
+				topos(chest.CFrame)
+				wait(0.5)
+			else
+				break
+			end
+		end
+	end
+
+	repeat
+		wait()
+
+		if hasFistOfDarkness() then
+			StopTween(_G.Farm)
+			Notification.new("<Color=Red>Stopping farm: Fist of Darkness found<Color=/>"):Display()
+			break
+		end
+
+		collectChests()
+
+	until not _G.Farm
+end)
 
 
 if World3 then
