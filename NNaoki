@@ -7720,6 +7720,7 @@ M:Toggle("Auto Cyborg (BETA)", false, function(V)
 	-- Fire the ClickDetector twice
 	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
 	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	wait(5)
 
 	-- Check if the player has "Fist of Darkness" or "God's Chalice"
 	if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Fist of Darkness") or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("God's Chalice") then
@@ -7759,6 +7760,16 @@ local function getChests()
 	end
 	return chests
 end
+
+spawn(function()
+	while AutoFarmChest do
+		wait(5)
+		local player = game.Players.LocalPlayer
+		if player and player.Character then
+			player:LoadCharacter() -- Respawns the character
+		end
+	end
+end)
 
 local function sortChestsByDistance(chests)
 	table.sort(chests, function(a, b)
@@ -7803,6 +7814,13 @@ spawn(function()
 		end
 	end
 end)
+
+M:Toggle("Auto Trade Core Brain", false, function(V) 
+	AutoFarmChest = V
+	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+end)
+
 
 M:Toggle("Auto Ghoul (Not working TEST)", _G.Farm, function(V)
 	_G.Farm = V
