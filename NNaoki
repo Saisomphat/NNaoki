@@ -7815,11 +7815,13 @@ spawn(function()
 	end
 end)
 
-M:Toggle("Auto Trade Core Brain", false, function(V) 
-	AutoFarmChest = V
-	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
-	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+M:Toggle("Auto Trade Core Brain", false, function(V)
+	if World2 then
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	end
 end)
+
 
 
 M:Toggle("Auto Ghoul (Not working TEST)", _G.Farm, function(V)
