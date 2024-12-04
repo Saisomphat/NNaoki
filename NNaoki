@@ -7822,7 +7822,7 @@ M:Toggle("Auto Trade Core Brain", false, function(V)
 	end
 end)
 
-Mn:Toggle("Auto Farm Boss", _G.FarmBoss, function(V)
+Mn:Toggle("Auto Find Core Brain", _G.FarmBoss, function(V)
 	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
 	_G.FarmBoss = V
 	StopTween(_G.FarmBoss)
@@ -7832,7 +7832,7 @@ spawn(function()
 	while wait() do
 		if _G.FarmBoss and BypassTP then
 			pcall(function()
-				-- Look for the boss with "Order" added to its name
+				
 				if game:GetService("Workspace").Enemies:FindFirstChild(_G.SelectBoss .. " Order") then
 					for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
 						if v.Name == _G.SelectBoss .. " Order" then
