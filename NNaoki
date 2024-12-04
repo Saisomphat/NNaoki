@@ -7822,7 +7822,7 @@ M:Toggle("Auto Trade Core Brain", false, function(V)
 	end
 end)
 
-Mn:Toggle("Auto Find Core Brain", _G.FarmBoss, function(V)
+M:Toggle("Auto Find Core Brain", _G.FarmBoss, function(V)
 	game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
 	_G.FarmBoss = V
 	StopTween(_G.FarmBoss)
