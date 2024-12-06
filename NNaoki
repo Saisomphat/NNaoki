@@ -7947,6 +7947,76 @@ spawn(function()
 	end
 end)
 
+M:Toggle("Safety", false, function(V) 
+	if World2 then
+		local playerRespawnDisbaned = false
+		local function respawnPlayer()
+			playerRespawnDisbaned = true
+			spawn(function()
+				while playerRespawnDisbaned do
+					wait(5)
+					if game.Players.LocalPlayer.Character then
+						game.Players.LocalPlayer:LoadCharacter()
+					end
+				end
+			end)
+		end
+
+		local function serverHop()
+			local HttpService = game:GetService("HttpService")
+			local PlaceId = game.PlaceId
+			local servers = {}
+
+			local function fetchServers(cursor)
+				local url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?limit=100"
+				if cursor then
+					url = url .. "&cursor=" .. cursor
+				end
+				local response = HttpService:JSONDecode(game:HttpGet(url))
+				if response and response.data then
+					for _, server in ipairs(response.data) do
+						if server.playing < server.maxPlayers and server.uptime and server.uptime > 21600 then -- 6 hours = 21600 seconds
+							table.insert(servers, server.id)
+						end
+					end
+					if response.nextPageCursor then
+						fetchServers(response.nextPageCursor)
+					end
+				end
+			end
+
+			fetchServers(nil)
+
+			if #servers > 0 then
+				game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceId, servers[1])
+			else
+				warn("No suitable servers found with uptime > 6 hours.")
+			end
+		end
+
+		local function startCountdown()
+			spawn(function()
+				for i = 180, 0, -1 do
+					wait(1)
+					if not V then break end 
+				end
+
+				if V then
+					serverHop()
+				end
+			end)
+		end
+
+		if V then
+			respawnPlayer()
+			startCountdown()
+		else
+			playerRespawnDisbaned = false
+		end
+	end
+end)
+
+
 M:Toggle("Auto Trade Core Brain", false, function(V)
 	if World2 then
 		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
