@@ -7815,7 +7815,137 @@ spawn(function()
 	end
 end)
 
+M:Toggle("Auto Cyborg(", false, function(V)
+	AutoFarmChest = V
+	StopTween(AutoFarmChest)
+	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
 
+	if player:FindFirstChild("Inventory") and player.Inventory:FindFirstChild("Fist of Darkness") then
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+		fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+	end
+end)
+
+_G.MagnitudeAdd = 0
+local playerRespawnDisbaned = false
+
+local function respawnPlayer()
+	if playerRespawnDisbaned then return end 
+	playerRespawnDisbaned = true
+	spawn(function()
+		while playerRespawnDisbaned do
+			wait(5)
+			if hasFistOfDarkness() then
+				local player = game.Players.LocalPlayer
+				player:LoadCharacter() 
+			else
+				playerRespawnDisbaned = false 
+			end
+		end
+	end)
+end
+
+local function getChests()
+	local chests = {}
+	for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
+		if v.Name:find("Chest") and v:IsA("BasePart") then
+			table.insert(chests, v)
+		end
+	end
+	return chests
+end
+
+local function sortChestsByDistance(chests)
+	table.sort(chests, function(a, b)
+		local distA = (a.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+		local distB = (b.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+		return distA < distB
+	end)
+end
+
+local function hasFistOfDarkness()
+	return game.Players.LocalPlayer:FindFirstChild("Inventory") 
+		and game.Players.LocalPlayer.Inventory:FindFirstChild("Fist of Darkness")
+end
+
+local function topos(cf)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cf
+end
+
+spawn(function()
+	while wait() do
+		if _G.StopItemsChest then
+			if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("God's Chalice") 
+				or game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Fist of Darkness") then
+				_G.ChestBypass = false
+				topos(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if AutoFarmChest then
+			local chests = getChests()
+			sortChestsByDistance(chests)
+			for _, chest in ipairs(chests) do
+				if (chest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5000 + _G.MagnitudeAdd then
+					repeat
+						wait()
+						if game.Workspace:FindFirstChild(chest.Name) then
+							topos(chest.CFrame)
+						end
+					until not AutoFarmChest or not chest.Parent
+
+					topos(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+					_G.MagnitudeAdd = _G.MagnitudeAdd + 1500
+
+					if hasFistOfDarkness() then
+						fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+						fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+
+						local args = {
+							[1] = "BlackbeardReward",
+							[2] = "Microchip",
+							[3] = "2"
+						}
+						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+					end
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if _G.FarmBoss then
+			pcall(function()
+				local bossName = _G.SelectBoss .. " Order"
+				local boss = game.Workspace.Enemies:FindFirstChild(bossName)
+				if boss and boss:FindFirstChild("Humanoid") and boss:FindFirstChild("HumanoidRootPart") then
+					repeat
+						task.wait()
+						AutoHaki()
+						EquipWeapon(_G.SelectWeapon)
+						boss.HumanoidRootPart.CanCollide = false
+						boss.Humanoid.WalkSpeed = 0
+						boss.HumanoidRootPart.Size = Vector3.new(80, 80, 80)
+						topos(boss.HumanoidRootPart.CFrame)
+					until not _G.FarmBoss or not boss.Parent or boss.Humanoid.Health <= 0
+				end
+
+				if hasItem("Core Brain") then
+					_G.FarmBoss = false
+					fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+					fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon.Button.Main.ClickDetector)
+				end
+			end)
+		end
+	end
+end)
 
 M:Toggle("Auto Trade Core Brain", false, function(V)
 	if World2 then
